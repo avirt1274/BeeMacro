@@ -11,7 +11,7 @@ prefix = '[BM-STATUS]' + ' '
 github = 'https://github.com/avirt1274/BeeMacro.git'
 main_raw = 'https://raw.githubusercontent.com/avirt1274/BeeMacro/main/main.py'
 #VersionFlag1
-version = 0.0002 #Do not change!!!
+version = 0.0001 #Do not change!!!
 #VersionFlag1
 
 #modules
