@@ -35,9 +35,8 @@ Alt + F5 - Primary Update!
 """
 
 def Update():
-    st_accept = "text/html" # говорим веб-серверу, 
-                        # что хотим получить html
-    # имитируем подключение через браузер
+    st_accept = "text/html" # tell web, 
+    # imatate web connecting
     user_agents = [
         'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
         'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
@@ -59,7 +58,7 @@ def Update():
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15'
     ]
-    # формируем хеш заголовков
+    # formatting header
     headers = {
         "Accept": st_accept,
         "User-Agent": user_agents[randint(0, len(user_agents) - 1)]
