@@ -134,7 +134,7 @@ def EnabledChangerAutoclicker():
 
 def farm():
     status = False
-    locationFarmDelay = 1
+    locationFarmDelay = 0.4
 
 
     while True:
@@ -183,7 +183,7 @@ def farm():
             pydirectinput.click(button='left')
         elif enabledAutoclicker:
             pydirectinput.click(button='left')
-            time.sleep(1)
+            time.sleep(0.1)
 
     
 def UpdateWithInstruction():
