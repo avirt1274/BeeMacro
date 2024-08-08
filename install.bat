@@ -1,2 +1,1 @@
-pip install pydirectinput keyboard requests bs4 lxml
-mkdir AHK
+pip install pydirectinput keyboard requests bs4 lxml pyautogui

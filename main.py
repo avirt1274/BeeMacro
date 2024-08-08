@@ -136,7 +136,9 @@ def AntiAFK():
     while True:
         if enabled:
             pydirectinput.click(button='left')
+            pydirectinput.keyDown('e')
             time.sleep(1)
+            pydirectinput.keyUp('e')
 
 
 def farm():
@@ -146,12 +148,9 @@ def farm():
     while True:
         if enabled:
             if status == False:
-                RunAHKScript('BeeMacro-AutoGingerbread.ahk')
+                # RunAHKScript('BeeMacro-AutoGingerbread.ahk')
                 AntiAFK_thread.run()
                 status = True
-                
-            pydirectinput.press('n')
-            time.sleep(2)
 
             # time.sleep(7200) # 7200 seconds = 2h
         elif enabledFarmDandelion:
@@ -176,14 +175,14 @@ def RunAHKScript(path):
 
 def main():
     Update()
-    print('\n')
-    print('Checking AHK.')
-    print('Checking AHK..')
-    print('Checking AHK...')
-    if AHKCheck():
-        print('AHK is already installed')
-    else:
-        print('Success Installed!')
+    # print('\n')
+    # print('Checking AHK.')
+    # print('Checking AHK..')
+    # print('Checking AHK...')
+    # if AHKCheck():
+    #     print('AHK is already installed')
+    # else:
+    #     print('Success Installed!')
         
     print('\n' + instruction + '\n')
     farm_thread = threading.Thread(target=farm)
