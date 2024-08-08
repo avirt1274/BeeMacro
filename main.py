@@ -1,9 +1,16 @@
-import pydirectinput, time, keyboard, asyncio, pyautogui, threading
+import pydirectinput, time, keyboard, threading
+from requests import get, post
+from random import randint
+from bs4 import BeautifulSoup
+import git
 
 #settings
 prefix = '[BM-STATUS]' + ' '
-github = ''
-version = 0.0001
+github = 'https://github.com/avirt1274/BeeMacro.git'
+main_raw = 'https://raw.githubusercontent.com/avirt1274/BeeMacro/main/main.py'
+#VersionFlag1
+version = 0.0002 #Do not change!!!
+#VersionFlag1
 
 #modules
 module_AGinger = 'Auto Gingerbread'
@@ -19,10 +26,80 @@ global enabledAutoclicker
 enabledAutoclicker = False
 
 instruction = f"""
-Alt + F1 - Start/Stop {module_AGinger}
-Alt + F2 - Start/Stop {module_FarmDandelion}
-Alt + F3 - Start/Stop {module_Autoclicker}
+Alt + F1 - Запустить/Остановить {module_AGinger}
+Alt + F2 - Запустить/Остановить {module_FarmDandelion}
+Alt + F3 - Запустить/Остановить {module_Autoclicker}
+------------------------------------------------
+Alt + F5 - Досрочное Обновление!
 """
+
+def Update():
+    st_accept = "text/html" # говорим веб-серверу, 
+                        # что хотим получить html
+    # имитируем подключение через браузер
+    user_agents = [
+        'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36/537.36'
+        'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36/537.36'
+        'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15'
+    ]
+    # формируем хеш заголовков
+    headers = {
+        "Accept": st_accept,
+        "User-Agent": user_agents[randint(0, len(user_agents) - 1)]
+    }
+
+    print('Проверка обновлений')
+    timed_html = get(main_raw, headers=headers)
+    raw_src = timed_html.text
+    html = BeautifulSoup(raw_src, 'lxml')
+    i = 0
+    for f in range(4):
+        print('test'[i])
+        i+=1
+    
+#     text = '''
+# #settings
+# prefix = '[BM-STATUS]' + ' '
+# github = 'https://github.com/avirt1274/BeeMacro/tree/main'
+# main_raw = 'https://raw.githubusercontent.com/avirt1274/BeeMacro/main/main.py'
+# #VersionFlag1
+# version = 0.0001
+# #VersionFlag2'''
+
+    m = html.p.text.partition("#VersionFlag1")[2].partition("#VersionFlag2")[0] # получаю что между флагами
+    i = 11
+    version_from_git = ''
+    for sdsdd in range(6):
+        version_from_git += m[i]
+        i+=1
+    
+    version_from_git = float(version_from_git)
+
+    if version_from_git > version:
+        print('Обновление найдено!')
+        git.Repo.clone(path=github)
+        print('Обновлено!')
+        time.sleep(2)
+        exit(0)
+    else:
+        print('У вас актуалная версия!')
+    time.sleep(2)
 
 def EnabledChanger():
     global enabled
@@ -78,16 +155,25 @@ def AGinger_farm():
             pydirectinput.click(x=850, y=480)
 
     
+# import keyboard, pyautogui
 
+# keyboard.add_hotkey('alt + f3', lambda: print(pyautogui.displayMousePosition()))
+
+# while True:
+#     pass
 
 
 def main():
-    print('Welcome to the BeeMacro! | By Avirt :)')
+    print(f'Welcome to the BeeMacro! {version} | By Avirt :)')
+
+    Update()
+
     print('\n' + instruction + '\n')
     farm_thread = threading.Thread(target=AGinger_farm)
     keyboard.add_hotkey('alt + f1', EnabledChanger)
     keyboard.add_hotkey('alt + f2', EnabledChangerFarmDandelion)
     keyboard.add_hotkey('alt + f3', EnabledChangerAutoclicker)
+    keyboard.add_hotkey('alt + f5', Update)
     farm_thread.run()
 
 main()
