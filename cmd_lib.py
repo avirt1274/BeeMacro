@@ -2,12 +2,10 @@ import subprocess
 
 
 class CMD():
-    def output(self, command:str):
-        """Output of CALL"""
-        output = CMD.call(command=command)
-        return output
+    def __init__(self) -> None:
+        pass
     
-    def call(self, command:str):
+    def call(command:str):
         """Use command in cmd"""
         result = b''
 
@@ -19,7 +17,7 @@ class CMD():
             result += err.decode('cp866').encode('utf-8')
         return result
 
-    def check_validable(self, command:str):
+    def check_validable(command:str):
         """Checking th CALL valibility"""
         try:
             return CMD.call(command)

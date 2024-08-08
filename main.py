@@ -150,8 +150,9 @@ def farm():
                 AntiAFK_thread.run()
                 status = True
                 
-            pydirectinput.press('e')
+            pydirectinput.press('n')
             time.sleep(2)
+
             # time.sleep(7200) # 7200 seconds = 2h
         elif enabledFarmDandelion:
             pydirectinput.click(x=32, y=42)
@@ -170,7 +171,7 @@ def UpdateWithInstruction():
 
 def RunAHKScript(path):
     if AHKCheck():
-        CMD.call(f'start "{os.getcwd()}/AHK/{path}"')
+        CMD.call(command=f'start AHK/{path}')
         
 
 def main():
