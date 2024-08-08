@@ -16,14 +16,14 @@ version = 0.0001 #Do not change!!!
 
 #modules
 module_AGinger = 'Auto Gingerbread'
-module_FarmDandelion = 'Farm Dandelion'
+module_Farm = 'Farm Location'
 module_Autoclicker = 'Autoclicker'
 
 #vars
 global enabled
 enabled = False
-global enabledFarmDandelion
-enabledFarmDandelion = False
+global enabledFarm
+enabledFarm = False
 global enabledAutoclicker
 enabledAutoclicker = False
 
@@ -31,7 +31,7 @@ instruction = f"""
 Welcome to the BeeMacro! v{version} | By Avirt :)
 ------------------------------------------------
 Alt + F1 - Start/Stop {module_AGinger}
-Alt + F2 - Start/Stop {module_FarmDandelion}
+Alt + F2 - Start/Stop {module_Farm} (BUGGED)
 Alt + F3 - Start/Stop {module_Autoclicker}
 ------------------------------------------------
 Alt + F5 - Primary Update!
@@ -114,14 +114,14 @@ def EnabledChanger():
         enabled = False
     print(prefix + f'{module_AGinger} : {enabled}!')
 
-def EnabledChangerFarmDandelion():
-    global enabledFarmDandelion
-    if enabledFarmDandelion == False:
-        enabledFarmDandelion = True
+def EnabledChangerFarm():
+    global enabledFarm
+    if enabledFarm == False:
+        enabledFarm = True
     else:
-        enabledFarmDandelion = False
+        enabledFarm = False
 
-    print(prefix + f'{module_FarmDandelion} : {enabledFarmDandelion}!')
+    print(prefix + f'{module_Farm} : {enabledFarm}!')
 
 def EnabledChangerAutoclicker():
     global enabledAutoclicker
@@ -132,33 +132,55 @@ def EnabledChangerAutoclicker():
     print(prefix + f'{module_Autoclicker} : {enabledAutoclicker}!')
 
 
-def AntiAFK():
+def farm():
+    status = False
+    locationFarmDelay = 1
+
+
     while True:
         if enabled:
+            # Gingerbread
+            if status == False:
+                # RunAHKScript('BeeMacro-AutoGingerbread.ahk')
+                pass
             pydirectinput.click(button='left')
             pydirectinput.keyDown('e')
             time.sleep(1)
             pydirectinput.keyUp('e')
 
-
-def farm():
-    status = False
-    AntiAFK_thread = threading.Thread(target=AntiAFK)
-
-    while True:
-        if enabled:
-            if status == False:
-                # RunAHKScript('BeeMacro-AutoGingerbread.ahk')
-                AntiAFK_thread.run()
-                status = True
-
             # time.sleep(7200) # 7200 seconds = 2h
-        elif enabledFarmDandelion:
-            pydirectinput.click(x=32, y=42)
-            time.sleep(3)
-            pydirectinput.click(x=960, y=880)
-            time.sleep(3)
-            pydirectinput.click(x=850, y=480)
+        elif enabledFarm:
+            pydirectinput.click(button='left')
+            pydirectinput.keyDown('w')
+            pydirectinput.click(button='left')
+            time.sleep(locationFarmDelay)
+            pydirectinput.click(button='left')
+            pydirectinput.keyUp('w')
+            pydirectinput.click(button='left')
+            time.sleep(locationFarmDelay)
+            pydirectinput.click(button='left')
+            pydirectinput.keyDown('d')
+            pydirectinput.click(button='left')
+            time.sleep(locationFarmDelay)
+            pydirectinput.click(button='left')
+            pydirectinput.keyUp('d')
+            pydirectinput.click(button='left')
+            time.sleep(locationFarmDelay)
+            pydirectinput.click(button='left')
+            pydirectinput.keyDown('s')
+            pydirectinput.click(button='left')
+            time.sleep(locationFarmDelay)
+            pydirectinput.click(button='left')
+            pydirectinput.keyUp('s')
+            pydirectinput.click(button='left')
+            time.sleep(locationFarmDelay)
+            pydirectinput.click(button='left')
+            pydirectinput.keyDown('a')
+            pydirectinput.click(button='left')
+            time.sleep(locationFarmDelay)
+            pydirectinput.click(button='left')
+            pydirectinput.keyUp('a')
+            pydirectinput.click(button='left')
         elif enabledAutoclicker:
             pydirectinput.click(button='left')
             time.sleep(1)
@@ -187,7 +209,7 @@ def main():
     print('\n' + instruction + '\n')
     farm_thread = threading.Thread(target=farm)
     keyboard.add_hotkey('alt + f1', EnabledChanger)
-    keyboard.add_hotkey('alt + f2', EnabledChangerFarmDandelion)
+    keyboard.add_hotkey('alt + f2', EnabledChangerFarm)
     keyboard.add_hotkey('alt + f3', EnabledChangerAutoclicker)
     keyboard.add_hotkey('alt + f5', UpdateWithInstruction)
     farm_thread.run()
