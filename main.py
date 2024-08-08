@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 import pydirectinput, time, keyboard, threading
 from requests import get, post
 from random import randint
 from bs4 import BeautifulSoup
-import git
+import os
 
 #settings
 prefix = '[BM-STATUS]' + ' '
@@ -26,11 +27,11 @@ global enabledAutoclicker
 enabledAutoclicker = False
 
 instruction = f"""
-Alt + F1 - Запустить/Остановить {module_AGinger}
-Alt + F2 - Запустить/Остановить {module_FarmDandelion}
-Alt + F3 - Запустить/Остановить {module_Autoclicker}
+Alt + F1 - Start/Stop {module_AGinger}
+Alt + F2 - Start/Stop {module_FarmDandelion}
+Alt + F3 - Start/Stop {module_Autoclicker}
 ------------------------------------------------
-Alt + F5 - Досрочное Обновление!
+Alt + F5 - Primary Update!
 """
 
 def Update():
@@ -64,25 +65,12 @@ def Update():
         "User-Agent": user_agents[randint(0, len(user_agents) - 1)]
     }
 
-    print('Проверка обновлений')
+    print('Checking updates!')
     timed_html = get(main_raw, headers=headers)
     raw_src = timed_html.text
     html = BeautifulSoup(raw_src, 'lxml')
-    i = 0
-    for f in range(4):
-        print('test'[i])
-        i+=1
-    
-#     text = '''
-# #settings
-# prefix = '[BM-STATUS]' + ' '
-# github = 'https://github.com/avirt1274/BeeMacro/tree/main'
-# main_raw = 'https://raw.githubusercontent.com/avirt1274/BeeMacro/main/main.py'
-# #VersionFlag1
-# version = 0.0001
-# #VersionFlag2'''
 
-    m = html.p.text.partition("#VersionFlag1")[2].partition("#VersionFlag2")[0] # получаю что между флагами
+    m = html.p.text.partition("#VersionFlag1")[2].partition("#VersionFlag2")[0] # Getting info between flags
     i = 11
     version_from_git = ''
     for sdsdd in range(6):
@@ -92,13 +80,14 @@ def Update():
     version_from_git = float(version_from_git)
 
     if version_from_git > version:
-        print('Обновление найдено!')
-        git.Repo.clone(path=github)
-        print('Обновлено!')
+        print('Update found!')
+        updated_file = open('main.py', 'w')
+        updated_file.write(html.p.text)
+        print('Updated!')
         time.sleep(2)
         exit(0)
     else:
-        print('У вас актуалная версия!')
+        print('You are have an actual version!!')
     time.sleep(2)
 
 def EnabledChanger():
