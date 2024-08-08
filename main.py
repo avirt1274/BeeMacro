@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import pydirectinput, time, keyboard, threading
+import pydirectinput, time, keyboard, threading, os
 from requests import get, post
 from random import randint
 from bs4 import BeautifulSoup
-import os
+from cmd_lib import CMD
+# import lxml
 
 #settings
 prefix = '[BM-STATUS]' + ' '
@@ -27,6 +28,8 @@ global enabledAutoclicker
 enabledAutoclicker = False
 
 instruction = f"""
+Welcome to the BeeMacro! v{version} | By Avirt :)
+------------------------------------------------
 Alt + F1 - Start/Stop {module_AGinger}
 Alt + F2 - Start/Stop {module_FarmDandelion}
 Alt + F3 - Start/Stop {module_Autoclicker}
@@ -89,6 +92,20 @@ def Update():
         print('You are have an actual version!!')
     time.sleep(2)
 
+
+def AHKCheck():
+    if os.path.exists('C:/Program Files/AutoHotkey'):
+        return True
+    else:
+        if os.path.exists(f'{os.getcwd()}/AHK/AutoHotkey_1.1.37.02_setup.exe'):
+            if os.startfile(f'{os.getcwd()}/AHK/AutoHotkey_1.1.37.02_setup.exe'):
+                return False
+            else:
+                return False
+        else:
+            return 'AutoHotkey_1.1.37.02_setup.exe is not in AHK!'
+
+
 def EnabledChanger():
     global enabled
     if enabled == False:
@@ -122,46 +139,57 @@ def AntiAFK():
             time.sleep(1)
 
 
-def AGinger_farm():
+def farm():
     status = False
     AntiAFK_thread = threading.Thread(target=AntiAFK)
 
     while True:
         if enabled:
             if status == False:
+                RunAHKScript('BeeMacro-AutoGingerbread.ahk')
                 AntiAFK_thread.run()
                 status = True
                 
-            pydirectinput.keyDown('e')
-            pydirectinput.keyUp('e')
-            time.sleep(7200) # 7200 seconds = 2h
+            pydirectinput.press('e')
+            time.sleep(2)
+            # time.sleep(7200) # 7200 seconds = 2h
         elif enabledFarmDandelion:
             pydirectinput.click(x=32, y=42)
             time.sleep(3)
             pydirectinput.click(x=960, y=880)
             time.sleep(3)
             pydirectinput.click(x=850, y=480)
+        elif enabledAutoclicker:
+            pydirectinput.click(button='left')
+            time.sleep(1)
 
     
-# import keyboard, pyautogui
+def UpdateWithInstruction():
+    Update()
+    print('\n' + instruction + '\n')
 
-# keyboard.add_hotkey('alt + f3', lambda: print(pyautogui.displayMousePosition()))
-
-# while True:
-#     pass
-
+def RunAHKScript(path):
+    if AHKCheck():
+        CMD.call(f'start "{os.getcwd()}/AHK/{path}"')
+        
 
 def main():
-    print(f'Welcome to the BeeMacro! {version} | By Avirt :)')
-
     Update()
-
+    print('\n')
+    print('Checking AHK.')
+    print('Checking AHK..')
+    print('Checking AHK...')
+    if AHKCheck():
+        print('AHK is already installed')
+    else:
+        print('Success Installed!')
+        
     print('\n' + instruction + '\n')
-    farm_thread = threading.Thread(target=AGinger_farm)
+    farm_thread = threading.Thread(target=farm)
     keyboard.add_hotkey('alt + f1', EnabledChanger)
     keyboard.add_hotkey('alt + f2', EnabledChangerFarmDandelion)
     keyboard.add_hotkey('alt + f3', EnabledChangerAutoclicker)
-    keyboard.add_hotkey('alt + f5', Update)
+    keyboard.add_hotkey('alt + f5', UpdateWithInstruction)
     farm_thread.run()
 
 main()
